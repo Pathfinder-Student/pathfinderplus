@@ -537,18 +537,28 @@ tbody tr:hover {
   
   </div>
   <div class="nav-right">
-    <a href="{{ url('home') }}" button class="logout-button">Log Out</a></abutton>
+   
+
+<form action="{{ route('logout') }}" method="POST" style="display: inline;">
+    @csrf
+    <button type="submit" class="logout-button">Log Out</button>
+</form>
+
   </div>
 </header>
 
-  <section class="student-profile">
+ <section class="student-profile">
     <div class="profile-info">
       <img src="{{ asset('images/student-profile.jpg')}}" alt="Student Photo" class="profile-pic">
       <div class="student-details">
-        <p class="date">March 05, 2025</p>
-        <h2>ABDUL D. YAKUL</h2>
+        <p class="date">{{ \Carbon\Carbon::now()->format('F d, Y') }}</p>
+        @if($student)
+            <h2>{{ strtoupper($student->fullname) }}</h2>
+        @else
+            <p>User data not available.</p>
+        @endif
         <p><strong>Grade:</strong> 10th</p>
-        <p><strong>Section:</strong> Gold (Au)</p>
+        <p><strong>Section:</strong> {{ $student->section }}</p>
       </div>
     </div>
   
@@ -590,7 +600,7 @@ tbody tr:hover {
           <td>Career Interest Survey</td>
           <td>Identifies possible career alignments</td>
           <td><span class="status not-started">Not Started</span></td>
-          <td><button class="action-button start">Start</button></td>
+          <td><a href="{{ route('exampletest') }}" button class="action-button start">Start</a></butto></td>
         </tr>
       </tbody>
     </table>

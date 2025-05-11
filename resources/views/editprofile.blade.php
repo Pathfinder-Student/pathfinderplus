@@ -327,8 +327,6 @@ footer {
 
     <form id="profileForm">
       <h2>Edit Profile</h2>
-      <input type="text" id="fullName" placeholder="Full Name" required>
-      <input type="text" id="studentId" placeholder="Student ID" required>
       <input type="email" id="email" placeholder="Email Address" required>
       <input type="text" id="contact" placeholder="Contact Number" required>
       <input type="text" id="address" placeholder="Address" required>

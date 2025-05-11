@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
+
 class StudentController extends Controller
 {
     public function home(){
@@ -15,26 +16,44 @@ class StudentController extends Controller
         return view('home');
     }
     public function showLogin()
-    {
-        return view('login');
+{
+    if (Auth::check()) {
+        return redirect()->route('studentdashboard');
+    }
+    return view('login');
+}
+
+    public function studentdashboard()
+    {    
+        $student = Auth::user();
+        return view('studentdashboard',compact('student'));
     }
     public function dashboard()
 {
-    return view('studentdashboard');
-}
- public function login(Request $request)
-    {
-        $credentials = $request->only('username', 'password');
-
-        $user = User::where('username', $credentials['username'])->first();
-
-        if ($user && Hash::check($credentials['password'], $user->password)) {
-            Auth::login($user);
-            return redirect()->intended('/studentdashboard');
-        }
-
-        return back()->withErrors(['login' => 'Invalid username or password']);
+    $student = Auth::user();
+    if (!$student) {
+        return redirect()->route('login');
     }
+    return view('studentdashboard', compact('student'));
+}
+
+public function login(Request $request)
+{
+    $credentials = $request->only('username', 'password');
+    $user = User::where('username', $credentials['username'])->first();
+ 
+    if (!$user) {
+        return back()->withErrors(['login' => 'Username not found']);
+    }
+    if ($user->password === $credentials['password']) {
+        Auth::login($user);
+        return redirect()->intended('/studentdashboard');
+    }
+
+    return back()->withErrors(['login' => 'Invalid password']);
+}
+
+
      public function recommendation()
      {
          return view('studentrecommendation');
@@ -47,5 +66,10 @@ class StudentController extends Controller
      {
         return view ('aboutthis');
      }
+     public function exampletest()
+     {
+        return view('exampletest');
+     }
+     
 }
 

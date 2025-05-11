@@ -181,6 +181,15 @@
 </head>
 
 <body>
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
   <div class="container">
     <form method="POST" action="{{ route('login.submit') }}">
@@ -189,9 +198,13 @@
         <h2>Let's Login</h2>
         <div class="error" id="login-error-msg">Please fill in both fields.</div>
 
-        <input type="text" id="login-username" name="username" placeholder="Username" required />
-        <input type="password" id="login-password" name="password" placeholder="Password" required />
-        <button type="submit">Login</button>
+        <form action="{{ url('login') }}" method="POST">
+    @csrf
+            <input type="text" name="username" id="username" placeholder="Username" autocomplete="username" required>
+            <input type="password" name="password" id="password" placeholder="Password" autocomplete="current-password" required>
+            <button type="submit">Login</button>
+        </form>
+
 
         <div class="switch-link">
           Don't have an account? <a href="#" onclick="showAskAdmin()">Ask Admin</a>
@@ -200,24 +213,7 @@
     </div>
   </div>
 
-  <script>
-    document.querySelector("form").addEventListener("submit", function(event) {
-      event.preventDefault();
-
-      const username = document.getElementById("login-username").value;
-      const password = document.getElementById("login-password").value;
-
-      if (!username || !password) {
-        document.getElementById("login-error-msg").style.display = "block";
-        return;
-      }
-
-      setTimeout(function() {
-
-        window.location.href = "{{ route('studentdashboard') }}";
-      }, 1000);
-    });
-  </script>
+  
 </body>
 
   </html>

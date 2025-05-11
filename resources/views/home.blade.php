@@ -82,7 +82,7 @@
                 <li><a href="#strands">Career Paths</a></li>
                 <li><a href="{{route('aboutthis')}}">About this</a></li>
             </ul>
-            <a href="Login_Form.html" class="login-btn">Log In</a>
+            <a href="{{url('/login')}}" class="login-btn">Log In</a>
         </nav>
     </header>
 
