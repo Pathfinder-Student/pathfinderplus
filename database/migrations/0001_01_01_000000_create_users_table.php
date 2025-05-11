@@ -18,11 +18,11 @@ return new class extends Migration
             $table->string('username');
             $table->timestamp('email_verified_at')->nullable();
             $table->integer('contact');
-            $table->string('grade');                                                   
+            $table->string('usertype')->default('student');                                                 
             $table->string('address');
             $table->string('section');
-            $table->string('password');
-
+            $table->string('strand');
+            $table->string('password');            
             $table->rememberToken();
             $table->timestamps();
         });

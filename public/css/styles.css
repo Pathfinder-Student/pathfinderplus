@@ -1703,12 +1703,12 @@ h3 {
 
 .prev {
     left: 10px;
-    background-image: url('prev_btn.svg');
+    background-image: url('../images/prev_btn.svg');
 }
 
 .next {
     right: 10px;
-    background-image: url('next_btn.svg');
+    background-image: url('../images/next_btn.svg');
 }
 
 

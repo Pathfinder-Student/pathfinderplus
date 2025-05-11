@@ -152,7 +152,7 @@
       </nav>
     <div class="logout-section">
       <p>Welcome, Admin!</p>
-      <a href="{{route('logout')}}"button class="logout-button">Log Out</a></button>
+      <a href="{{route('logout')}}" button class="logout-button">Log Out</a></button>
     </div>
   </div>
 

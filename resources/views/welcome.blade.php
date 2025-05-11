@@ -75,12 +75,12 @@
     <header>
         <nav class="navbar">
             <div class="logo">
-                <img src="{{ asset('images/BSHS Logo.png')}}" alt="School Logo">
+                <img src="{{ asset ('images/BSHS Logo.png')}}" alt="School Logo">
             </div>
             <ul class="nav-links">
-                <li><a href="{{url('home')}}" class="active">Home</a></li>
+                <li><a href="{{route('home')}}" class="active">Home</a></li>
                 <li><a href="#strands">Career Paths</a></li>
-                <li><a href="{{url('aboutthis')}}">About this</a></li>
+                <li><a href="{{route('aboutthis')}}">About this</a></li>
             </ul>
             <a href="{{url('/login')}}" class="login-btn">Log In</a>
         </nav>
@@ -92,7 +92,7 @@
             <h3>FIND THE RIGHT PATH FOR YOUR FUTURE</h3>
             <h1>Discover The Senior High Strand <br> <span>That Fits You Best</span></h1>
             <div class="buttons">
-                <a href="#warning" class="btn primary">Take The Assessment Now</a>
+                <a href="#" class="btn primary">Take The Assessment Now</a>
             </div>
         </div>
     </section>
@@ -102,37 +102,36 @@
         <p>Take the first step in choosing the right Senior High strand for you.</p>
         
         <div class="icon-container">
-            <div class="row">
-                <div class="icon-item">
-                    <img src="{{ asset('images/strand_selection.svg') }}" alt="Strand Selection">
-                    <p>Strand Selection</p>
-                </div>
-                <div class="icon-item">
-                    <img src="{{ asset('images/academic_strengths.svg') }}" alt="Academic Strengths">
-                    <p>Academic Strengths</p>
-                </div>
-                <div class="icon-item">
-                    <img src="{{ asset('images/career_pathways.svg') }}" alt="Career Pathways">
-                    <p>Career Pathways</p>
-                </div>
-                <div class="icon-item">
-                    <img src="{{ asset('images/personalized_assessment.svg') }}" alt="Personalized Assessment">
-                    <p>Personalized Assessment</p>
-                </div>
-                <div class="icon-item">
-                    <img src="{{ asset('images/future_opportunities.svg') }}" alt="Future Opportunities">
-                    <p>Future Opportunities</p>
-                </div>
-                <div class="icon-item">
-                    <img src="{{ asset('images/decision_timeline.svg') }}" alt="Decision Timeline">
-                    <p>Decision Timeline</p>
-                </div>
-                <div class="icon-item">
-                    <img src="{{ asset('images/career_guidance.svg') }}" alt="Career Guidance Seminar">
-                    <p>Career Guidance Seminar</p>
-                </div>
+            <div class="icon-item">
+               <img src="{{ asset('images/strand_selection.svg') }}" alt="Strand Selection">
+               <p>Strand Selection</p>
+            </div>
+            <div class="icon-item">
+               <img src="{{ asset('images/academic_strengths.svg') }}" alt="Academic Strengths">
+               <p>Academic Strengths</p>
+            </div>
+            <div class="icon-item">
+               <img src="{{ asset('images/career_pathways.svg')}}" alt="Career Pathways">
+               <p>Career Pathways</p>
+            </div>
+            <div class="icon-item">
+               <img src="{{ asset('images/personalized_assessment.svg') }}" alt="Personalized Assessment">
+               <p>Personalized Assessment</p>
+            </div>
+            <div class="icon-item">
+               <img src="{{ asset('images/future_opportunities.svg') }}" alt="Future Opportunities">
+               <p>Future Opportunities</p>
+            </div>
+            <div class="icon-item">
+               <img src="{{ asset('images/decision_timeline.svg') }}" alt="Decision Timeline">
+               <p>Decision Timeline</p>
+            </div>
+            <div class="icon-item">
+               <img src="{{ asset('images/career_guidance.svg') }}" alt="Career Guidance Seminar">
+               <p>Career Guidance Seminar</p>
             </div>
         </div>
+
     </div>
 
     <div class="container_strands" id="strands">
@@ -239,28 +238,26 @@
 
     <section class="perfect-strand">
         <div class="content">
-            <img src="{{ asset('images/books_icon.png') }}" alt="Books and Graduation Cap">
+            <img src="{{ asset ('images/books_icon.png')}}" alt="Books and Graduation Cap">
             <div class="text">
                 <h2>Find Your <span>Perfect Strand</span></h2>
                 <p>There are many career paths to explore, but choosing the right Senior High strand ensures a future that aligns with your strengths and interests.</p>
             </div>
         </div>
-        <a href="#" class="btn">Take The Assessment Now</a>
     </section>
         
     <footer>
         <div class="footer-nav"> 
             <div class="footer-logos">
                 <img src="{{ asset('images/BSHS Logo.png') }}" alt="Logo 1">
-                <img src="{{ asset('images/kagawaran ng edukasyon_logo.png') }}" alt="Logo 2">
+                <img src="{{ asset('images/kagawaran ng edukasyon_logo.png')}}" alt="Logo 2">
                 <img src="{{ asset('images/deped_logo.png') }}" alt="Logo 3">
             </div>
             <nav>
                 <ul>
-                    <li><a href="#hero" class="active">Home</a></li>
+                 <li><a href="#hero" class="active">Home</a></li>
                     <li><a href="#strands">Career Paths</a></li>
                     <li><a href="#">About this</a></li>
-            </nav>
         </div>
         <div class="footer-copyright">
             <p>Copyrights © 2025 BSHS. All rights reserved.</p>
@@ -268,7 +265,9 @@
     </footer>
     
 
-    <script src="script.js"></script>
+    <script>
+        
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

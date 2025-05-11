@@ -542,7 +542,7 @@ tbody tr:hover {
 <form action="{{ route('logout') }}" method="POST" style="display: inline;">
     @csrf
     <button type="submit" class="logout-button">Log Out</button>
-</form>
+
 
   </div>
 </header>

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,3 +21,9 @@ Route::post('/logout', function () {
     Auth::logout();
     return redirect('/');
 })->name('logout');
+Route::get('/admindashboard', action: [AdminController::class, 'dashboard'])->name('admindashboard');
+Route::get('/admindashstudents', action: [AdminController::class, 'admindashstudents'])->name('admindashstudents');
+Route::get('/admindashassessments', action: [AdminController::class, 'admindashassessments'])->name('admindashassessments');
+Route::get('/admindashreports', action: [AdminController::class, 'admindashreports'])->name('admindashreports');
+Route::get('/admindashsettings', action: [AdminController::class, 'admindashsettings'])->name('admindashsettings');
+Route::get('/logout', [StudentController::class, 'logout'])->name('logout');
