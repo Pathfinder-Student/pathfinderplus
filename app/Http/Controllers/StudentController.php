@@ -95,8 +95,8 @@ class StudentController extends Controller
         return view('aboutthis');
     }
 
-    public function exampletest()
+    public function examtest()
     {
-        return view('exampletest');
+        return view('examtest');
     }
 }

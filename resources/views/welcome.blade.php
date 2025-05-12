@@ -9,6 +9,159 @@
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 <body>
+<style>
+    .content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .container_strands {
+    margin: 50px auto;
+    width: 100%;
+    background-color: #f7fdf4;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.strands-text {
+    color: #444;
+    font-size: 20px;
+    line-height: 1.6;
+    font-weight: normal;
+}
+
+
+.icon-container {
+    display: grid;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 50px;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    gap: 90px;
+    margin-bottom: 30px;
+}
+
+.icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.icon-item img {
+    width: 50px; 
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.icon-item p {
+    font-weight: bold;
+    color: black;
+    font-size: 14px;
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.tabs button {
+    background: none;
+    border: none;
+    color: #464646; 
+    font-weight: bold;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: border-bottom 0.3s ease, color 0.3s ease;
+}
+
+
+.tabs button.active {
+    color: #1B7200; 
+    border-bottom: 2px solid #1B7200;
+}
+
+
+.carousel {
+    position: relative;
+    width: 90%;
+    margin: auto;
+    overflow: hidden;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+}
+
+.slide {
+    min-width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    box-sizing: border-box;
+}
+
+
+.slide img {
+    width: 45%;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-left: 90px;
+}
+
+
+.description {
+    text-align: left;
+    width: 50%;
+}
+
+.description p {
+    width: 480px;
+    font-size: 20px;
+    color: #333;
+    line-height: 1.5;
+    margin-left: 5px;
+}
+    .prev, .next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: transparent;
+        border: none;
+        font-size: 30px;
+        color: black;
+        cursor: pointer;
+    }
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent; 
+    z-index: 10;
+}
+</style>
 
     <!-- Chatbot -->
 
@@ -134,68 +287,87 @@
 
     </div>
 
-    <div class="container_strands" id="strands">
-        <h2><span class="highlight">All The Skills</span> You Need In One Place</h2>
-        <p class="strands">Discover the perfect Senior High strand and gain the knowledge you need for the future.</p>
+   <div class="container_strands" id="strands">
+    <h2><span class="highlight">All The Skills</span> You Need In One Place</h2>
+    <p class="strands">Discover the perfect Senior High strand and gain the knowledge you need for the future.</p>
 
-        <div class="tabs">
-            <button onclick="showSlide(0)">STEM</button>
-            <button onclick="showSlide(1)">HUMSS</button>
-            <button onclick="showSlide(2)">ABM</button>
-            <button onclick="showSlide(3)">Arts and Design</button>
-            <button onclick="showSlide(4)">TVL</button>
-            <button onclick="showSlide(5)">GAS</button>
-        </div>
+    <!-- Tabs for each strand -->
+    <div class="tabs">
+        <button onclick="showContent(0)">STEM</button>
+        <button onclick="showContent(1)">HUMSS</button>
+        <button onclick="showContent(2)">ABM</button>
+        <button onclick="showContent(3)">Arts and Design</button>
+        <button onclick="showContent(4)">TVL</button>
+        <button onclick="showContent(5)">GAS</button>
+    </div>
 
-        <div class="carousel">
-            <button class="prev" onclick="changeSlide(-1)"></button>
-            
-            <div class="slides">
-                <div class="slide">
-                    <img src="{{ asset('images/stem.png') }}" alt="STEM">
+    <!-- Carousel section -->
+    <div class="carousel">
+        <button class="prev" onclick="changeSlide(-1)"></button>
+
+        <div class="slides">
+            <div class="slide">
+                <div class="content">
+                    <img src="{{ asset('images/stem.png') }}" alt="STEM" class="strand-image">
                     <div class="description">
                         <h3>S T E M</h3>
                         <p><strong>Science, Technology, Engineering, and Mathematics</strong></p>
                         <p>The STEM strand is designed for students who have a strong interest in science, mathematics, engineering, and technology. It focuses on subjects like physics, chemistry, biology, calculus, and computer science, preparing students for careers in engineering, medicine, information technology, and scientific research.</p>
                     </div>
                 </div>
+            </div>
 
-                <div class="slide">
-                    <img src="{{ asset('images/humss.png') }}" alt="HUMSS">
+            <div class="slide">
+                <div class="content">
+                    <img src="{{ asset('images/humss.png') }}" alt="HUMSS" class="strand-image">
                     <div class="description">
                         <h3>H U M S S</h3>
                         <p><strong>Humanities and Social Sciences</strong></p>
                         <p>The HUMSS strand is ideal for students who love to read, write, analyze social issues, and engage in discussions about culture and society. It covers subjects like philosophy, political science, communication, and literature, preparing students for careers in law, education, journalism, and social sciences.</p>
                     </div>
                 </div>
+            </div>
 
-                <div class="slide">
-                    <img src="{{ asset('images/abm.png') }}" alt="ABM">
+            <!-- ABM Slide -->
+            <div class="slide">
+                <div class="content">
+                    <img src="{{ asset('images/abm.png') }}" alt="ABM" class="strand-image">
                     <div class="description">
                         <h3>A B M</h3>
                         <p><strong>Accountancy, Business, and Management</strong></p>
                         <p>The ABM strand is for students interested in entrepreneurship, finance, and corporate management. It includes subjects like accounting, marketing, business ethics, and economics, preparing students for careers in business administration, finance, marketing, and management.</p>
                     </div>
                 </div>
+            </div>
 
-                <div class="slide">
-                    <img src="{{ asset('images/arts.png') }}" alt="Arts and Design">
+            <!-- Arts and Design Slide -->
+            <div class="slide">
+                <div class="content">
+                    <img src="{{ asset('images/arts.png') }}" alt="Arts and Design" class="strand-image">
                     <div class="description">
                         <h3>A R T S</h3>
                         <p><strong>Arts and Design Track</strong></p>
                         <p>The Arts and Design track is perfect for creative students who want to pursue careers in multimedia arts, visual arts, performing arts, and creative industries. It covers topics like graphic design, painting, filmmaking, theater arts, and photography.</p>
                     </div>
                 </div>
-                <div class="slide">
-                    <img src="{{ asset('images/tvl.png') }}" alt="TVL">
+            </div>
+
+            <!-- TVL Slide -->
+            <div class="slide">
+                <div class="content">
+                    <img src="{{ asset('images/tvl.png') }}" alt="TVL" class="strand-image">
                     <div class="description">
                         <h3>T V L</h3>
                         <p><strong>Technical-Vocational-Livelihood Track</strong></p>
                         <p>The TVL track is for students who prefer hands-on learning and practical skills that lead to employable skills after graduation. It includes specializations like culinary arts, ICT (Information and Communications Technology), automotive, welding, electrical installation, and caregiving.</p>
                     </div>
                 </div>
-                <div class="slide">
-                    <img src="{{ asset('images/gas.png') }}" alt="GAS">
+            </div>
+
+            <!-- GAS Slide -->
+            <div class="slide">
+                <div class="content">
+                    <img src="{{ asset('images/gas.png') }}" alt="GAS" class="strand-image">
                     <div class="description">
                         <h3>G A S</h3>
                         <p><strong>General Academic Strand</strong></p>
@@ -203,9 +375,10 @@
                     </div>
                 </div>
             </div>
-
+        </div>
             <button class="next" onclick="changeSlide(1)"></button>
         </div>
+    </div>
 
         <h2>Choose Based On More Than <span class="highlight">Just Academics!</span></h2>
         <p>Discover where your skills, interests, and personality fit best.</p>
@@ -221,7 +394,10 @@
 
     <div class="login-container">
         <div class="login-form">
-            <form action="login.php" method="POST">
+            <form method="POST" action="{{ route('login.submit') }}">
+            @csrf
+            <form action="{{url('login')}}" method="POST">
+                  @csrf
                 <h2>LOG IN</h2>
                 <p>Log in to access your profile, courses, and exclusive resources.</p>
             
@@ -265,9 +441,31 @@
     </footer>
     
 
-    <script>
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+
+    function showContent(index) {
+        slides.forEach(slide => slide.style.display = 'none');
         
-    </script>
+        slides[index].style.display = 'block';
+        
+        currentSlide = index;
+    }
+
+    function changeSlide(direction) {
+        let nextSlide = currentSlide + direction;
+
+        if (nextSlide >= slides.length) {
+            nextSlide = 0;
+        } else if (nextSlide < 0) {
+            nextSlide = slides.length - 1;
+        }
+
+        showContent(nextSlide);
+    }
+    showContent(currentSlide);
+</script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -600,7 +600,7 @@ tbody tr:hover {
           <td>Career Interest Survey</td>
           <td>Identifies possible career alignments</td>
           <td><span class="status not-started">Not Started</span></td>
-          <td><a href="{{ route('exampletest') }}" button class="action-button start">Start</a></butto></td>
+          <td><a href="{{ route('examtest') }}" button class="action-button start">Start</a></butto></td>
         </tr>
       </tbody>
     </table>
@@ -701,10 +701,7 @@ tbody tr:hover {
          <img src="{{ asset('images/deped_logo.png') }}" alt="Logo 3">
       </div>
       <nav class="footer-nav">
-        <a href="StudentDashboard.html">Home</a>
-        <a href="StudentRecommendation.html">Recommendations</a>
-        <a href="#">Career Paths</a>
-        <a href="#">Resources</a>
+        <a href="{{ route('studentdashboard') }}">Dashboard</a>
       </nav>
     </div>
   

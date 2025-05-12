@@ -16,7 +16,7 @@ Route::get('/studentrecommendation', [StudentController::class, 'recommendation'
 Route::get('/editprofile', [StudentController::class, 'editprofile'])->name('editprofile');
 Route::get('/home', [StudentController::class, 'home'])->name('home');
 Route::get('/aboutthis', [StudentController::class, 'aboutthis'])->name('aboutthis');
-Route::get('/exampletest', [StudentController::class, 'exampletest'])->name('exampletest');
+Route::get('/examtest', [StudentController::class, 'examtest'])->name('examtest');
 Route::post('/logout', function () {
     Auth::logout();
     return redirect('/');
