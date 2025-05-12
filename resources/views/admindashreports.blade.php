@@ -118,7 +118,9 @@
       </nav>
     <div class="logout-section">
       <p>Welcome, Admin!</p>
-      <a href="{{route('logout')}}" button class="logout-button">Log Out</a></button>
+        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+    @csrf
+    <button type="submit" class="logout-button">Log Out</button>
     </div>
   </div>
 

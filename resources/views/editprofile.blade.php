@@ -310,7 +310,10 @@ footer {
     <img src="{{ asset('images/BSHS Logo.png')}}" alt="School Logo" class="logo">
   </div>
   <div class="nav-right">
-    <a href="{{ url('home') }}" button class="logout-button">Log Out</a></abutton>
+      <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+    @csrf
+    <button type="submit" class="logout-button">Log Out</button>
+    </form>
   </div>
 </header>
 

@@ -199,7 +199,7 @@
         <div class="error" id="login-error-msg">Please fill in both fields.</div>
 
         <form action="{{ url('login') }}" method="POST">
-    @csrf
+        @csrf
             <input type="text" name="username" id="username" placeholder="Username" autocomplete="username" required>
             <input type="password" name="password" id="password" placeholder="Password" autocomplete="current-password" required>
             <button type="submit">Login</button>

@@ -433,7 +433,7 @@
                 <ul>
                  <li><a href="#hero" class="active">Home</a></li>
                     <li><a href="#strands">Career Paths</a></li>
-                    <li><a href="#">About this</a></li>
+                    <li><a href="{{route('aboutthis')}}">About this</a></li>
         </div>
         <div class="footer-copyright">
             <p>Copyrights © 2025 BSHS. All rights reserved.</p>

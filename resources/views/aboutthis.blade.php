@@ -436,8 +436,8 @@ nav ul li a {
             </div>
             <nav>
                 <ul>
-                    <li><a href="#hero" class="active">Home</a></li>
-                    <li><a href="#strands">Career Paths</a></li>
+                    <li><a href="{{route('home')}}">Home</a></li>
+                    <li><a href="{{route('home')}}">Career Paths</a></li>
                     <li><a href="#">About this</a></li>
             </nav>
         </div>

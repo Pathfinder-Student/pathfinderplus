@@ -543,7 +543,7 @@ tbody tr:hover {
     @csrf
     <button type="submit" class="logout-button">Log Out</button>
 
-
+</form>
   </div>
 </header>
 
