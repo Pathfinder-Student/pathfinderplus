@@ -43,9 +43,10 @@
     </p>
   </div>
 
-<form action="{{ route('assessment6.submit') }}" method="POST" onsubmit="return prepareAnswers()">
+<form action="{{ route('assessment6.submit') }}" method="POST" onsubmit="return prepareAnswers(event)">
     @csrf
 
+    <!-- Questions -->
     <section class="question-section">
         <div class="question-box">
             <p class="question-text">How do you usually feel after attending a big social gathering?</p>
@@ -96,6 +97,7 @@
         </div>
     </section>
 
+    <!-- Hidden input for answers -->
     <input type="hidden" name="answers" id="answers">
 
     <div class="submit-btn-container">
@@ -111,48 +113,45 @@
 </style>
 
 <script>
-   const answers = {};
+const answers = {};
 
-// Event listener for option buttons
+// Handle selection
 document.querySelectorAll('.option-btn').forEach(button => {
-  button.addEventListener('click', function () {
-    const question = this.dataset.question;
-    const value = this.dataset.value;
+    button.addEventListener('click', function () {
+        const question = this.dataset.question;
+        const value = this.dataset.value;
 
-    answers[question] = value;
+        answers[question] = value;
 
-    document.querySelectorAll(`[data-question="${question}"]`).forEach(btn => {
-      btn.classList.remove('selected');
+        // Unselect other buttons in same question
+        document.querySelectorAll(`[data-question="${question}"]`).forEach(btn => {
+            btn.classList.remove('selected');
+        });
+
+        this.classList.add('selected');
     });
-
-    this.classList.add('selected');
-  });
 });
 
+// Prepare form submission
 function prepareAnswers(event) {
-  event.preventDefault();
+    event.preventDefault();
 
-  const questions = new Set();
-  document.querySelectorAll('.option-btn').forEach(btn => {
-    questions.add(btn.dataset.question);
-  });
+    const totalQuestions = document.querySelectorAll('.question-section').length;
 
-  const totalQuestions = questions.size; 
+    if (Object.keys(answers).length < totalQuestions) {
+        alert('Please answer all questions before submitting.');
+        return false;
+    }
 
-  if (Object.keys(answers).length < totalQuestions) {
-    alert('Please answer all questions before proceeding.');
-    return false;
-  }
+    // Only store the selected values (A/B)
+    document.getElementById('answers').value = JSON.stringify(Object.values(answers));
 
-  console.log(answers); 
-
-  document.getElementById('answers').value = JSON.stringify(answers);
-
-  document.querySelector('form').submit();
-  return true;
+    // Submit form
+    document.querySelector('form').submit();
+    return true;
 }
-
 </script>
+
 
 
 

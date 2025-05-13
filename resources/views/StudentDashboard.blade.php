@@ -592,17 +592,22 @@ tbody tr:hover {
       </thead>
       <tbody>
 @foreach($assessments as $assessment)
+  @php
+    $userResult = $results->get($assessment->id);
+  @endphp
   <tr>
     <td>{{ $assessment->name }}</td>
     <td>{{ $assessment->description }}</td>
     <td>
-      <span class="status {{ strtolower($assessment->status) }}">
-        {{ ucfirst($assessment->status) }}
+      <span class="status {{ $userResult ? 'complete' : strtolower($assessment->status) }}">
+        {{ $userResult ? 'Complete' : ucfirst($assessment->status) }}
       </span>
     </td>
     <td>
-      @if($assessment->link)
-        <a href="{{ $assessment->link }}" target="_blank" class="action-button">Start</a>
+      @if($userResult)
+        <a href="{{ route('view.result', $userResult->id) }}" class="action-button">View Result</a>
+      @elseif($assessment->link)
+        <a href="{{ $assessment->link }}" class="action-button">Start</a>
       @else
         <span style="color: grey;">No Link</span>
       @endif

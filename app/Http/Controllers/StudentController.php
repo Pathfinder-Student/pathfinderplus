@@ -279,6 +279,11 @@ public function showResult(Request $request)
     $recommendedStrand = $this->determineStrand($allAnswers);
     $personalityType = $this->determinePersonality($allAnswers);
     $resultLabel = $this->mapStrandToLabel($recommendedStrand);
+    
+    Result::updateOrCreate(
+        [
+            'user_id' => auth()->id(),
+        ],
 
     Result::create([
         'user_id' => auth()->id(),
@@ -290,7 +295,7 @@ public function showResult(Request $request)
         'status' => 'complete',
     ]);
 
-    return view('admindashboard', compact('recommendedStrand', 'personalityType', 'resultLabel'));
+    return view('studentdashboard', compact('recommendedStrand', 'personalityType', 'resultLabel'));
 }
 
 public function viewResult($id)
