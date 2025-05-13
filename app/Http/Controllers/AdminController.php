@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Admin;
-
+use App\Models\Assessment;
 class AdminController extends Controller
 {
     public function dashboard()
@@ -28,4 +28,22 @@ class AdminController extends Controller
     {
         return view('admindashsettings');
     }
+    public function storeAssessment(Request $request)
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'required|string',
+        'status' => 'required|string',
+        'link' => 'nullable|url',
+    ]);
+
+    $assessment = new Assessment();
+    $assessment->name = $validated['name'];
+    $assessment->description = $validated['description'];
+    $assessment->status = $validated['status'];
+    $assessment->link = $validated['link'] ?? null;
+    $assessment->save();
+
+    return redirect()->route('admindashassessment')->with('success', 'Assessment added successfully.');
+ }
 }

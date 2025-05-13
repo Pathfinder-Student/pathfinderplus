@@ -160,7 +160,7 @@
 
   <div class="main">
     <h1>Assessments</h1>
-    <button class="add-btn">➕ Add Assessment</button>
+    <button class="add-btn" onclick="openAddModal()">➕ Add Assessment</button>
 
     <div class="overview">
       <h2>Overview</h2>
@@ -169,33 +169,13 @@
           <tr>
             <th>Assessment</th>
             <th>Taken</th>
-            <th>Duration</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <>
             <td>Measures proficiency in Math, English, and Science</td>
-            <td>13</td>
-            <td>30 mins</td>
-            <td>
-              <button class="action-btn">Edit</button>
-              <button class="action-btn delete-btn">Delete</button>
-            </td>
-          </tr>
-          <tr>
-            <td>Understand interests and personal traits</td>
-            <td>24</td>
-            <td>30 mins</td>
-            <td>
-              <button class="action-btn">Edit</button>
-              <button class="action-btn delete-btn">Delete</button>
-            </td>
-          </tr>
-          <tr>
-            <td>Identifies possible career alignments</td>
-            <td>45</td>
-            <td>30 mins</td>
+            <td>count</td>
             <td>
               <button class="action-btn">Edit</button>
               <button class="action-btn delete-btn">Delete</button>

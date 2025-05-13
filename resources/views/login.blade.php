@@ -204,7 +204,7 @@
             <input type="password" name="password" id="password" placeholder="Password" autocomplete="current-password" required>
             <button type="submit">Login</button>
         </form>
-
+  
 
         <div class="switch-link">
           Don't have an account? <a href="#" onclick="showAskAdmin()">Ask Admin</a>

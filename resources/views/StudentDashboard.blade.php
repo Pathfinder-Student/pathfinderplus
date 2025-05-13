@@ -524,7 +524,15 @@ tbody tr:hover {
   text-align: center;
   padding: 12px 0;
   font-size: 14px;
-}         
+}       
+.status.completed {
+  color: green;
+  font-weight: bold;
+}
+.status.pending {
+  color: orange;
+  font-weight: bold;
+}  
 </style>
 </head>
 
@@ -542,7 +550,6 @@ tbody tr:hover {
 <form action="{{ route('logout') }}" method="POST" style="display: inline;">
     @csrf
     <button type="submit" class="logout-button">Log Out</button>
-
 </form>
   </div>
 </header>
@@ -584,29 +591,28 @@ tbody tr:hover {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Academic Skills</td>
-          <td>Measures proficiency in Math, English, and Science</td>
-          <td><span class="status completed">Completed</span></td>
-          <td><button class="action-button view">View</button></td>
-        </tr>
-        <tr>
-          <td>Personality Quiz</td>
-          <td>Understand interests and personal traits</td>
-          <td><span class="status in-progress">In Progress</span></td>
-          <td><button class="action-button take">Take</button></td>
-        </tr>
-        <tr>
-          <td>Career Interest Survey</td>
-          <td>Identifies possible career alignments</td>
-          <td><span class="status not-started">Not Started</span></td>
-          <td><a href="{{ route('examtest') }}" button class="action-button start">Start</a></butto></td>
-        </tr>
-      </tbody>
+@foreach($assessments as $assessment)
+  <tr>
+    <td>{{ $assessment->name }}</td>
+    <td>{{ $assessment->description }}</td>
+    <td>
+      <span class="status {{ strtolower($assessment->status) }}">
+        {{ ucfirst($assessment->status) }}
+      </span>
+    </td>
+    <td>
+      @if($assessment->link)
+        <a href="{{ $assessment->link }}" target="_blank" class="action-button">Start</a>
+      @else
+        <span style="color: grey;">No Link</span>
+      @endif
+    </td>
+  </tr>
+@endforeach
+</tbody>
     </table>
   </section>
   
-
   <section class="assessment-result">
     <h1>ASSESSMENT RESULT STATUS</h1>
     <p>Once you've completed the assessments, your results will appear here. You’ll also see the strand recommendation based on your performance and preferences.</p>
@@ -623,30 +629,22 @@ tbody tr:hover {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1</td>
-          <td>Academic Skills</td>
-          <td>12 Apr 2025</td>
-          <td>Above Average</td>
-          <td>STEM</td>
-          <td><button class="action-button view">View</button></td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Personality Quiz</td>
-          <td>10 Apr 2025</td>
-          <td>Creative Thinker</td>
-          <td>HUMSS</td>
-          <td><button class="action-button view">View</button></td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Career Interest</td>
-          <td>11 Apr 2025</td>
-          <td>Business-Oriented</td>
-          <td>ABM</td>
-          <td><button class="action-button view">View</button></td>
-        </tr>
+        @forelse($results as $index => $result)
+    <tr>
+      <td>{{ $index + 1 }}</td>
+      <td>{{ $result->description }}</td>
+      <td>{{ \Carbon\Carbon::parse($result->date_taken)->format('F d, Y') }}</td>
+      <td>{{ $result->result }}</td>
+      <td>{{ $result->recommended_strand }}</td>
+      <td>
+        <a href="{{ route('assessment.result.view', $result->id) }}" class="action-button">View</a>
+      </td>
+    </tr>
+  @empty
+    <tr>
+      <td colspan="6" style="text-align: center;">No assessment results yet.</td>
+    </tr>
+  @endforelse
       </tbody>
     </table>
   </section>
