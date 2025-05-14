@@ -611,7 +611,9 @@ tbody tr:hover {
     </td>
     <td>
       @if(strtolower($assessment->status) === 'complete' && $assessment->link)
-        <a href="{{ $assessment->link }}" target="_blank" class="action-button">View</a>
+        <button type="button" class="action-button" data-bs-toggle="modal" data-bs-target="#resultModal{{ $assessment->id }}">
+          View
+        </button>
       @elseif(strtolower($assessment->status) === 'pending' && $assessment->link)
         <a href="{{ $assessment->link }}" class="action-button">Start</a>
       @else
