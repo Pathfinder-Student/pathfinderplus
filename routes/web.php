@@ -34,7 +34,6 @@ Route::get('/assessment3', [StudentController::class, 'assessment3'])->name('ass
 Route::get('/assessment4', [StudentController::class, 'assessment4'])->name('assessment4');
 Route::get('/assessment5', [StudentController::class, 'assessment5'])->name('assessment5');
 Route::get('/assessment6', [StudentController::class, 'assessment6'])->name('assessment6');
-Route::post('/student/assessments/store', [StudentController::class, 'storeAssessment'])->name('assessments.store');
 Route::post('/assessment1', [StudentController::class, 'submitAssessment1'])->name('assessment1.submit');
 Route::post('/assessment2', [StudentController::class, 'submitAssessment2'])->name('assessment2.submit');
 Route::post('/assessment3', [StudentController::class, 'submitAssessment3'])->name('assessment3.submit');
@@ -44,6 +43,11 @@ Route::post('/assessment6', [StudentController::class, 'submitAssessment6'])->na
 Route::get('/assessment/result/{id}', [StudentController::class, 'viewResult'])->name('assessment.result.view');
 Route::post('/profile/update', [StudentController::class, 'update'])->name('profile.update');
 Route::get('/assessment/result/{id}', [StudentController::class, 'Result']);
-
+Route::get('/admindashreports', [AdminController::class, 'showStrandReport'])->name('admindashreports');
+Route::post('/admin/assessments/store', [AdminController::class, 'storeAssessment'])->name('assessments.store');
+Route::get('/assessment/edit/{name}', [AdminController::class, 'editAssessment'])->name('edit.assessment');
+Route::delete('/assessment/delete/{name}', [AdminController::class, 'deleteAssessment'])->name('delete.assessment');
+Route::get('/users', [AdminController::class, 'showUsers'])->name('showUsers');
+Route::get('/user/profile/{id}', [AdminController::class, 'show'])->name('user.profile');
 
 

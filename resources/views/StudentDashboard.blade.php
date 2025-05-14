@@ -207,6 +207,7 @@ td {
 
 .completed {
   background-color: #217c1f;
+  width:70%;
 }
 
 .in-progress {
@@ -525,10 +526,10 @@ tbody tr:hover {
   padding: 12px 0;
   font-size: 14px;
 }       
-.status.completed {
-  color: green;
+.status{
   font-weight: bold;
 }
+
 .status.pending {
   color: orange;
   font-weight: bold;
@@ -601,6 +602,11 @@ tbody tr:hover {
       </thead>
       <tbody>
 @foreach($assessments as $assessment)
+  @php
+    $hasTaken = $results->contains(function ($result) use ($assessment) {
+        return $result->description === $assessment->description;
+    });
+  @endphp
   <tr>
     <td>{{ $assessment->name }}</td>
     <td>{{ $assessment->description }}</td>
@@ -610,19 +616,18 @@ tbody tr:hover {
       </span>
     </td>
     <td>
-      @if(strtolower($assessment->status) === 'complete' && $assessment->link)
+      @if($hasTaken)
         <button type="button" class="action-button" data-bs-toggle="modal" data-bs-target="#resultModal{{ $assessment->id }}">
           View
         </button>
       @elseif(strtolower($assessment->status) === 'pending' && $assessment->link)
         <a href="{{ $assessment->link }}" class="action-button">Start</a>
       @else
-        <span style="color: grey;">No Link</span>
+        <span style="color: grey;">Done</span>
       @endif
     </td>
   </tr>
 @endforeach
-
 
 </tbody>
     </table>

@@ -34,24 +34,43 @@ class StudentController extends Controller
 {
     $student = Auth::user();
 
+
+    $assessment = Assessment::firstOrCreate(
+        [
+            'user_id' => $student->id,
+            'name' => 'Academic and Personality Skills',
+        ],
+        [
+            'description' => 'Guides strand choice through personality and academic assessment',
+            'status' => 'pending',
+            'link' => route('assessment1'),
+        ]
+    );
+
     $assessments = Assessment::where('user_id', $student->id)->get();
+
+    $results = Result::where('user_id', $student->id)->orderBy('date_taken', 'desc')->get();
+    
+    $takenCount = \App\Models\Result::where('description', 'Academic and Personality Skills')
+                ->distinct('user_id')
+                ->count('user_id');
+
+
+    return view('studentdashboard', compact('student', 'assessments', 'results','takenCount'));
+}
+
+
+   public function dashboard()  
+{
+    $student = Auth::user();
+    if (!$student) {
+        return redirect()->route('login');
+    }
 
     $results = Result::where('user_id', $student->id)->orderBy('date_taken', 'desc')->get();
 
     return view('studentdashboard', compact('student', 'assessments', 'results'));
 }
-
-
-    public function dashboard()
-    {
-        
-        $student = Auth::user();
-        if (!$student) {
-            return redirect()->route('login');
-        }
-
-        return view('studentdashboard', compact('student','assessments'));
-    }
 
 public function login(Request $request)
 {
@@ -132,25 +151,7 @@ public function login(Request $request)
     {
         return view('assessment6');
     }
-    public function storeAssessment(Request $request)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'description' => 'required|string',
-        'status' => 'required|string',
-        'link' => 'nullable|url',
-    ]);
-
-    Assessment::create([
-        'user_id' => Auth::id(),
-        'name' => $request->name,
-        'description' => $request->description,
-        'status' => $request->status,
-        'link' => $request->link,
-    ]);
-
-    return redirect()->back()->with('success', 'Assessment added successfully.');
-}
+   
 
 public function submitAssessment1(Request $request)
 {
@@ -255,17 +256,20 @@ public function submitAssessment6(Request $request)
         'personality_type' => $personalityType,
         'description' => 'Academic and Personality Skills',
         'date_taken' => now(),
-        'status' => 'complete',
+        'status' => 'completed',
     ]);
 
-     Assessment::updateOrCreate([
-            'user_id' => Auth::id(),
-            'name' => 'Academic and Personality Skills',
-        ], [
-            'description' => 'Guides strand choice through personality and academic assessment',
-            'status' => 'complete',
-            'link' => route('studentdashboard'),
-        ]);
+       $assessment = Assessment::firstOrNew([
+        'user_id' => Auth::id(),
+        'name' => 'Academic and Personality Skills',
+    ]);
+
+    $assessment->description = 'Guides strand choice through personality and academic assessment';
+    $assessment->link = route('studentdashboard');
+    if ($assessment->status !== 'completed') {
+        $assessment->status = 'completed';
+    }
+    $assessment->save();
 
     session()->forget([
         'assessment1', 'assessment2', 'assessment3',
@@ -302,7 +306,7 @@ public function showResult(Request $request)
         'description' => 'Academic and Personality Skills',
         'result' => $resultLabel,
         'date_taken' => now(),
-        'status' => 'complete',
+        'status' => 'completed',
     ]);
 
     return view('studentdashboard', compact('recommendedStrand', 'personalityType', 'resultLabel'));

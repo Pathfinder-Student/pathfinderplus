@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
         $table->id();
+        $table->unsignedBigInteger('user_id')->nullable();
         $table->string('username')->unique();
         $table->string('fullname');
         $table->string('profile_picture')->nullable()->default('images/user-icon.png');

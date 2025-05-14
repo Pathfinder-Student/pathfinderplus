@@ -14,6 +14,7 @@ class Result extends Model
     'result',
     'date_taken',
     'status'
+    
 ];
 
 }

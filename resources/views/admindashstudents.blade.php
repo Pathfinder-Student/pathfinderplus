@@ -159,7 +159,7 @@
     </div>
       <nav class="menu">
         <a href="{{route('admindashboard')}}" class="nav-item">Home</a>
-        <a href="{{route('admindashstudents')}}" class="nav-item">Students</a>
+        <a href="{{route('admindashstudents')}}" class="nav-item active">Students</a>
         <a href="{{route('admindashassessments')}}" class="nav-item">Assessments</a>
         <a href="{{route('admindashreports')}}" class="nav-item">Reports</a>
         <a href="{{route('admindashsettings')}}" class="nav-item">Settings</a>
@@ -173,53 +173,94 @@
     </div>
   </div>
 
-  <div class="main">
+ <div class="main">
     <h1>Students</h1>
-    
-    <div class="search-section">
-      <input type="text" placeholder="Search by Student’s Name">
-      <input type="text" placeholder="Search by Section">
-      <button>Search</button>
-    </div>
+
+   <form id="searchForm" onsubmit="return false;">
+  <input type="text" name="name" placeholder="Search by Student’s Name" id="searchName" onkeyup="filterStudents()">
+  <input type="text" name="section" placeholder="Search by Section" id="searchSection" onkeyup="filterStudents()">
+</form>
 
     <button class="add-button">Add Student</button>
 
     <div class="table">
-      <h2>Overview</h2>
-      <div class="table-header">
-        <div>Image</div>
-        <div>Name</div>
-        <div>Section</div>
-        <div>Last Activity</div>
-        <div>Details</div>
+        <h2>Overview</h2>
+        <div class="table-header">
+            <div>Image</div>
+            <div>Name</div>
+            <div>Section</div>
+            <div>Last Activity</div>
+            <div>Details</div>
+        </div>
+@foreach ($users as $user)
+    <div class="table-row">
+        <img src="{{ asset($user->profile_picture ?? 'images/user-icon.png') }}" alt="User">
+        <div>{{ $user->fullname }}</div>
+        <div>{{ $user->section }}</div>
+        <div>{{ $user->updated_at->format('d M Y') }}</div>
+<button class="view-button" onclick="openUserModal({{ $user->id }}, '{{ addslashes($user->fullname) }}', '{{ addslashes($user->section) }}', '{{ asset($user->profile_picture ?? 'images/user-icon.png') }}', '{{ $user->updated_at->format('d M Y') }}')">View</button>
       </div>
-
-      <div class="table-row">
-        <img src="https://via.placeholder.com/45" alt="Student">
-        <div>Jin Malapoks</div>
-        <div>Au – Gold</div>
-        <div>12 Apr 2025</div>
-        <button class="view-button">View</button>
-      </div>
-
-      <div class="table-row">
-        <img src="https://via.placeholder.com/45" alt="Student">
-        <div>Jin Malapoks</div>
-        <div>Au – Gold</div>
-        <div>10 Apr 2025</div>
-        <button class="view-button">View</button>
-      </div>
-
-      <div class="table-row">
-        <img src="https://via.placeholder.com/45" alt="Student">
-        <div>Jin Malapoks</div>
-        <div>Au – Gold</div>
-        <div>11 Apr 2025</div>
-        <button class="view-button">View</button>
-      </div>
+@endforeach
     </div>
+</div>
+
+
+<!-- User Details Modal -->
+<div id="userModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5);">
+  <div class="modal-content" style="background:#fff; padding:20px; margin: 50px auto; width: 400px; border-radius: 8px; position: relative;">
+    <span onclick="closeUserModal()" style="cursor:pointer; position:absolute; top:10px; right:15px; font-size: 24px;">&times;</span>
+    <img id="modalProfilePic" src="" alt="Profile Picture" style="width:100px; height:100px; border-radius:50%; background-color:green; display:block; margin: 0 auto 10px;">
+    <h2 id="modalFullname" style="text-align:center; color:green;"></h2>
+    <p><strong>Section:</strong> <span id="modalSection"></span></p>
+    <p><strong>Last Activity:</strong> <span id="modalLastActivity"></span></p>
   </div>
 </div>
+
+<script>
+function openUserModal(id, fullname, section, profilePic, lastActivity) {
+  document.getElementById('modalProfilePic').src = profilePic;
+  document.getElementById('modalFullname').textContent = fullname.toUpperCase();
+  document.getElementById('modalSection').textContent = section;
+  document.getElementById('modalLastActivity').textContent = lastActivity;
+
+  document.getElementById('userModal').style.display = 'block';
+}
+
+function closeUserModal() {
+  document.getElementById('userModal').style.display = 'none';
+}
+
+window.onclick = function(event) {
+  const modal = document.getElementById('userModal');
+  if (event.target == modal) {
+    closeUserModal();
+  }
+}
+</script>
+
+<script>
+function filterStudents() {
+  const nameInput = document.getElementById('searchName').value.toLowerCase();
+  const sectionInput = document.getElementById('searchSection').value.toLowerCase();
+
+  const rows = document.querySelectorAll('.table-row');
+
+  rows.forEach(row => {
+    const name = row.children[1].textContent.toLowerCase();
+    const section = row.children[2].textContent.toLowerCase();
+
+    const nameMatches = name.includes(nameInput);
+    const sectionMatches = section.includes(sectionInput);
+
+    if (nameMatches && sectionMatches) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+}
+</script>
+
 
 <div class="footer">
   Copyrights © 2025 BSHS. All rights reserved.

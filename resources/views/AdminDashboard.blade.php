@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Assessments - Admin Panel</title>
   <style>
-        body {
+    body {
       margin: 0;
       font-family: Arial, sans-serif;
       background-color: #f8fdf5;
@@ -132,6 +132,56 @@
       bottom: 0;
       width: 100%;
     }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 8% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 40%;
+      max-width: 500px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-content h2 {
+      color: green;
+      text-align: center;
+    }
+
+    .modal-content input,
+    .modal-content textarea,
+    .modal-content select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .close {
+      position: absolute;
+      right: 20px;
+      top: 10px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: red;
+    }
   </style>
 </head>
 <body>
@@ -143,18 +193,19 @@
       <div class="name">Jane Doe</div>
       <div class="role">Admin</div>
     </div>
-      <nav class="menu">
-        <a href="{{route('admindashboard')}}" class="nav-item">Home</a>
-        <a href="{{route('admindashstudents')}}" class="nav-item">Students</a>
-        <a href="{{route('admindashassessments')}}" class="nav-item">Assessments</a>
-        <a href="{{route('admindashreports')}}" class="nav-item">Reports</a>
-        <a href="{{route('admindashsettings')}}" class="nav-item">Settings</a>
-      </nav>
+    <nav class="menu">
+      <a href="{{ route('admindashboard') }}" class="nav-item active">Home</a>
+      <a href="{{ route('admindashstudents') }}" class="nav-item">Students</a>
+      <a href="{{ route('admindashassessments') }}" class="nav-item">Assessments</a>
+      <a href="{{ route('admindashreports') }}" class="nav-item">Reports</a>
+      <a href="{{ route('admindashsettings') }}" class="nav-item">Settings</a>
+    </nav>
     <div class="logout-section">
       <p>Welcome, Admin!</p>
-      <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-    @csrf
-    <button type="submit" class="logout-button">Log Out</button>
+      <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="logout-button">Log Out</button>
+      </form>
     </div>
   </div>
 
@@ -173,20 +224,29 @@
           </tr>
         </thead>
         <tbody>
-            <td>Measures proficiency in Math, English, and Science</td>
-            <td>count</td>
+          <tr>
+            <td>Academic and Personality Skills</td>
+            <td>{{ $takenCount }}</td>
             <td>
-              <button class="action-btn">Edit</button>
-              <button class="action-btn delete-btn">Delete</button>
+              <a href="{{ route('edit.assessment', ['name' => 'Academic and Personality Skills']) }}" class="action-btn">Edit</a>
+              <form action="{{ route('delete.assessment', ['name' => 'Academic and Personality Skills']) }}" method="POST" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="action-btn delete-btn" onclick="return confirm('Are you sure?')">Delete</button>
+              </form>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+
   </div>
 
-  <div class="footer">
-    Copyrights © 2025 BSHS. All rights reserved.
-  </div>
+</div>
+
+<div class="footer">
+  Copyrights © 2025 BSHS. All rights reserved.
+</div>
+
 </body>
 </html>

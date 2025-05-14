@@ -113,7 +113,7 @@
         <a href="{{route('admindashboard')}}" class="nav-item">Home</a>
         <a href="{{route('admindashstudents')}}" class="nav-item">Students</a>
         <a href="{{route('admindashassessments')}}" class="nav-item">Assessments</a>
-        <a href="{{route('admindashreports')}}" class="nav-item">Reports</a>
+        <a href="{{route('admindashreports')}}" class="nav-item active">Reports</a>
         <a href="{{route('admindashsettings')}}" class="nav-item">Settings</a>
       </nav>
     <div class="logout-section">
@@ -125,30 +125,24 @@
   </div>
 
         <main class="main-content">
-            <h1>Reports</h1>
-            <h2>Student Strand Distribution Overview</h2>
-            <p>This shows the number of students recommended for each strand:</p>
+    <h1>Reports</h1>
+    <h2>Student Strand Distribution Overview</h2>
+    <p>This shows the number of students recommended for each strand:</p>
 
-            <div class="cards">
-                <div class="card">
-                    <strong>100</strong>
-                    <p>STEM</p>
-                </div>
-                <div class="card">
-                    <strong>100</strong>
-                    <p>HUMSS</p>
-                </div>
-                <div class="card">
-                    <strong>45</strong>
-                    <p>ABM</p>
-                </div>
-                <div class="card">
-                    <strong>27</strong>
-                    <p>TVL</p>
-                </div>
+    <div class="cards">
+        @php
+            $strands = ['STEM', 'HUMSS', 'ABM', 'TVL','GAS'];
+        @endphp
+
+        @foreach ($strands as $strand)
+            <div class="card">
+                <strong>{{ $strandCounts[$strand] ?? 0 }}</strong>
+                <p>{{ $strand }}</p>
             </div>
-        </main>
+        @endforeach
     </div>
+</main>
+
 
     <footer class="footer">
         Copyrights © 2025 BSHS. All rights reserved.

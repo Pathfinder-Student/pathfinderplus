@@ -199,7 +199,6 @@
           <tr>
             <th>Assessment</th>
             <th>Taken</th>
-            <th>Duration</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -207,7 +206,6 @@
           <tr>
             <td>Academic and Personality Skills</td>
             <td>13</td>
-            <td>30 mins</td>
             <td>
               <button class="action-btn">Edit</button>
               <button class="action-btn delete-btn">Delete</button>

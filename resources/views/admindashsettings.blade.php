@@ -158,7 +158,7 @@
         <a href="{{route('admindashstudents')}}" class="nav-item">Students</a>
         <a href="{{route('admindashassessments')}}" class="nav-item">Assessments</a>
         <a href="{{route('admindashreports')}}" class="nav-item">Reports</a>
-        <a href="{{route('admindashsettings')}}" class="nav-item">Settings</a>
+        <a href="{{route('admindashsettings')}}" class="nav-item active">Settings</a>
       </nav>
     <div class="logout-section">
       <p>Welcome, Admin!</p>
