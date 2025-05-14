@@ -42,6 +42,8 @@ Route::post('/assessment4', [StudentController::class, 'submitAssessment4'])->na
 Route::post('/assessment5', [StudentController::class, 'submitAssessment5'])->name('assessment5.submit');
 Route::post('/assessment6', [StudentController::class, 'submitAssessment6'])->name('assessment6.submit');
 Route::get('/assessment/result/{id}', [StudentController::class, 'viewResult'])->name('assessment.result.view');
-Route::get('/assessment/result/{id}', [StudentController::class, 'viewResult'])->name('assessment.result.view');
+Route::post('/profile/update', [StudentController::class, 'update'])->name('profile.update');
+Route::get('/assessment/result/{id}', [StudentController::class, 'Result']);
+
 
 

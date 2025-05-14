@@ -120,33 +120,27 @@
 <script>
 const answers = {};
 
-// Event listener for option buttons
 document.querySelectorAll('.option-btn').forEach(button => {
   button.addEventListener('click', function () {
-    const question = this.dataset.question;  // Get the question ID from data-question
-    const value = this.dataset.value;        // Get the answer from data-value
+    const question = this.dataset.question;
+    const value = this.dataset.value;
 
-    // Store the selected answer in the answers object
     answers[question] = value;
 
-    // Remove 'selected' class from all options for this question
     document.querySelectorAll(`[data-question="${question}"]`).forEach(btn => {
       btn.classList.remove('selected');
     });
 
-    // Add 'selected' class to the clicked button
     this.classList.add('selected');
   });
 });
 
-// Function to prepare answers before submitting
 function prepareAnswers(event) {
-  event.preventDefault();  // Prevent form submission to manually validate answers
+  event.preventDefault();
 
-  // Get all distinct question IDs
   const questions = new Set();
   document.querySelectorAll('.option-btn').forEach(btn => {
-    questions.add(btn.dataset.question); // Add question IDs to a set to avoid duplicates
+    questions.add(btn.dataset.question); 
   });
 
   const totalQuestions = questions.size; 
@@ -156,12 +150,10 @@ function prepareAnswers(event) {
     return false;
   }
 
-  console.log(answers);  // Debugging: Check the contents of the answers object
+  console.log(answers); 
 
-  // Assign the answers to the hidden input
   document.getElementById('answers').value = JSON.stringify(answers);
 
-  // Submit the form if everything is valid
   document.querySelector('form').submit();
   return true;
 }

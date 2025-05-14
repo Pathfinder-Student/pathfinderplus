@@ -32,7 +32,7 @@ class StudentController extends Controller
 
     public function studentdashboard()
     {
-         $assessments = Assessment::all();
+    $assessments = Assessment::all();
     $student = Auth::user();
 
     $results = Result::where('user_id', $student->id)->orderBy('date_taken', 'desc')->get();
@@ -51,33 +51,34 @@ class StudentController extends Controller
         return view('studentdashboard', compact('student','assessments'));
     }
 
-    public function login(Request $request)
-    {
-        $credentials = $request->only('username', 'password');
+public function login(Request $request)
+{
+    $credentials = $request->only('username', 'password');
 
-        $admin = Admin::where('username', $credentials['username'])->first();
-        if ($admin && $admin->password === $credentials['password']) {
+    $admin = Admin::where('username', $credentials['username'])->first();
+    if ($admin) {
+        if ($admin->password === $credentials['password']) {
             Auth::login($admin);
-            session([
-                'usertype' => 'admin',
-                'username' => $admin->username,
-            ]);
+            session(['usertype' => 'admin', 'username' => $admin->username]);
             return redirect()->intended('/admindashboard');
+        } else {
+            return back()->withErrors(['password' => 'Incorrect password.'])->withInput();
         }
-
-        $user = User::where('username', $credentials['username'])->first();
-        if ($user && $user->password === $credentials['password']) {
-            Auth::login($user);
-            session([
-                'usertype' => 'student',
-                'username' => $user->username,
-            ]);
-            return redirect()->intended('/studentdashboard');
-        }
-
-        return back()->withErrors(['login' => 'Invalid username or password']);
     }
 
+    $user = User::where('username', $credentials['username'])->first();
+    if (!$user) {
+        return back()->withErrors(['username' => 'Account does not exist.'])->withInput();
+    }
+
+    if ($user->password !== $credentials['password']) {
+        return back()->withErrors(['password' => 'Incorrect password.'])->withInput();
+    }
+
+    Auth::login($user);
+    session(['usertype' => 'student', 'username' => $user->username]);
+    return redirect()->intended('/studentdashboard');
+}
     public function logout(Request $request)
     {
         Auth::logout();
@@ -233,7 +234,6 @@ public function submitAssessment6(Request $request)
         (array) session('assessment6')
     );
 
-    // Filter answers to determine strand and personality
     $strandAnswers = array_values(array_filter($allAnswers, function ($answer) {
         return in_array(strtoupper($answer), ['STEM', 'ABM', 'HUMSS', 'GAS', 'TVL']);
     }));
@@ -242,7 +242,6 @@ public function submitAssessment6(Request $request)
         return in_array(strtoupper($answer), ['A', 'B']);
     }));
 
-    // Determine personality type and strand
     $personalityType = $this->determinePersonality($personalityAnswers);
     $recommendedStrand = $this->determineStrand($strandAnswers);
     $resultLabel = $this->mapStrandToLabel($recommendedStrand);
@@ -257,14 +256,24 @@ public function submitAssessment6(Request $request)
         'status' => 'complete',
     ]);
 
+     Assessment::where('user_id', Auth::id())
+        ->where('name', 'Personality Assessment')
+        ->update([
+            'status' => 'complete',
+            'link' => route('studentdashboard')
+        ]);
+
     session()->forget([
         'assessment1', 'assessment2', 'assessment3',
         'assessment4', 'assessment5', 'assessment6'
     ]);
 
-    return redirect()->route('studentdashboard')->with('success', 'Assessment saved successfully.');
+    return view('assessment6', [
+        'resultLabel' => $resultLabel,
+        'recommendedStrand' => $recommendedStrand,
+        'personalityType' => $personalityType,
+    ]);
 }
-
 public function showResult(Request $request)
 {
     $allAnswers = array_merge(
@@ -280,10 +289,7 @@ public function showResult(Request $request)
     $personalityType = $this->determinePersonality($allAnswers);
     $resultLabel = $this->mapStrandToLabel($recommendedStrand);
     
-    Result::updateOrCreate(
-        [
-            'user_id' => auth()->id(),
-        ],
+    
 
     Result::create([
         'user_id' => auth()->id(),
@@ -304,7 +310,7 @@ public function viewResult($id)
         ->where('user_id', Auth::id())
         ->firstOrFail();
 
-    return view('studentdashboard', compact('result'));
+    return view('partials.assessment-result', compact('result'));
 }
 
 private function determineStrand($answers)
@@ -355,4 +361,42 @@ private function mapStrandToLabel($strand)
         default => 'General',
     };
 }
+public function update(Request $request)
+{
+    $user = Auth::user();
+
+    $request->validate([
+        'email' => 'required|email',
+        'contact' => 'required|string|max:15',
+        'address' => 'required|string|max:255',
+        'profile_picture' => 'nullable|image|max:2048'
+    ]);
+
+    $user->email = $request->email;
+    $user->contact = $request->contact;
+    $user->address = $request->address;
+
+    if ($request->hasFile('profile_picture')) {
+        $file = $request->file('profile_picture');
+        $filename = time() . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path('uploads'), $filename);
+        $user->profile_picture = 'uploads/' . $filename;
+    }
+
+    $user->save();
+
+    return back()->with('success', 'Profile updated successfully.');
+}
+public function Result($id)
+{
+    $result = result::findOrFail($id);
+
+    return response()->json([
+        'description' => $result->description,
+        'date_taken' => \Carbon\Carbon::parse($result->date_taken)->format('F d, Y'),
+        'result' => $result->result,
+        'recommended_strand' => $result->recommended_strand,
+    ]);
+}
+
 }

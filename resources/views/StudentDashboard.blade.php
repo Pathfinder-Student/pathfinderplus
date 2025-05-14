@@ -533,6 +533,17 @@ tbody tr:hover {
   color: orange;
   font-weight: bold;
 }  
+.modal {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center;
+}
+.modal-content {
+  background: white; padding: 20px; border-radius: 8px; width: 50%; max-height: 80%; overflow-y: auto;
+}
+.close {
+  float: right; font-size: 24px; cursor: pointer;
+}
+
 </style>
 </head>
 
@@ -545,8 +556,6 @@ tbody tr:hover {
   
   </div>
   <div class="nav-right">
-   
-
 <form action="{{ route('logout') }}" method="POST" style="display: inline;">
     @csrf
     <button type="submit" class="logout-button">Log Out</button>
@@ -556,7 +565,7 @@ tbody tr:hover {
 
  <section class="student-profile">
     <div class="profile-info">
-      <img src="{{ asset('images/student-profile.jpg')}}" alt="Student Photo" class="profile-pic">
+      <img src="{{ Auth::user()->profile_picture ? asset(Auth::user()->profile_picture) : asset('images/user-icon.png') }}" alt="Student Photo" class="profile-pic">
       <div class="student-details">
         <p class="date">{{ \Carbon\Carbon::now()->format('F d, Y') }}</p>
         @if($student)
@@ -592,26 +601,23 @@ tbody tr:hover {
       </thead>
       <tbody>
 @foreach($assessments as $assessment)
-  @php
-    $userResult = $results->get($assessment->id);
-  @endphp
   <tr>
     <td>{{ $assessment->name }}</td>
     <td>{{ $assessment->description }}</td>
     <td>
-      <span class="status {{ $userResult ? 'complete' : strtolower($assessment->status) }}">
-        {{ $userResult ? 'Complete' : ucfirst($assessment->status) }}
+      <span class="status {{ strtolower($assessment->status) }}">
+        {{ ucfirst($assessment->status) }}
       </span>
     </td>
     <td>
-      @if($userResult)
-        <a href="{{ route('view.result', $userResult->id) }}" class="action-button">View Result</a>
-      @elseif($assessment->link)
-        <a href="{{ $assessment->link }}" class="action-button">Start</a>
-      @else
-        <span style="color: grey;">No Link</span>
-      @endif
-    </td>
+  @if($assessment->status === 'complete')
+    <a href="{{ $assessment->link }}" target="_blank" class="action-button">View</a>
+  @elseif($assessment->link)
+    <a href="{{ $assessment->link }}" target="_blank" class="action-button">Start</a>
+  @else
+    <span style="color: grey;">No Link</span>
+  @endif
+</td>
   </tr>
 @endforeach
 </tbody>
@@ -634,7 +640,7 @@ tbody tr:hover {
         </tr>
       </thead>
       <tbody>
-        @forelse($results as $index => $result)
+         @forelse($results as $index => $result)
     <tr>
       <td>{{ $index + 1 }}</td>
       <td>{{ $result->description }}</td>
@@ -642,7 +648,7 @@ tbody tr:hover {
       <td>{{ $result->result }}</td>
       <td>{{ $result->recommended_strand }}</td>
       <td>
-        <a href="{{ route('assessment.result.view', $result->id) }}" class="action-button">View</a>
+          <button type="button" class="action-button" data-id="{{ $result->id }}" onclick="viewResult(this)">View</button>
       </td>
     </tr>
   @empty
@@ -653,7 +659,19 @@ tbody tr:hover {
       </tbody>
     </table>
   </section>
-  
+  <!-- Assessment Result Modal -->
+<div id="resultModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2>Assessment Result Details</h2>
+    <p><strong>Date Taken:</strong> <span id="modal-date"></span></p>
+    <p><strong>Description:</strong> <span id="modal-description"></span></p>
+    <p><strong>Result:</strong> <span id="modal-result"></span></p>
+    <p><strong>Recommended Strand:</strong> <span id="modal-strand"></span></p>
+  </div>
+</div>
+
+
 
 
   <section class="notes-recommendation">
@@ -715,5 +733,56 @@ tbody tr:hover {
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   
+<script>
+  function viewResult(button) {
+    const resultId = button.getAttribute('data-id');
+
+    fetch(`/assessment/result/${resultId}`)
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('modal-date').textContent = data.date_taken;
+        document.getElementById('modal-description').textContent = data.description;
+        document.getElementById('modal-result').textContent = data.result;
+        document.getElementById('modal-strand').textContent = data.recommended_strand;
+
+        document.getElementById('resultModal').style.display = 'block';
+      })
+      .catch(error => {
+        console.error('Error fetching result:', error);
+      });
+  }
+
+  function closeModal() {
+    document.getElementById('resultModal').style.display = 'none';
+  }
+</script>
+<style>
+.modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 50%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+</style>
+
+
 </body>
 </html>

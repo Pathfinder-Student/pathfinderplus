@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('assessments', function (Blueprint $table) {
         $table->id();
+         $table->unsignedBigInteger('user_id');
         $table->string('name');
         $table->text('description');
         $table->string('status')->default('Pending');

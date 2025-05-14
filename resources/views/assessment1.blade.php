@@ -10,21 +10,15 @@
   <!-- ========== NAVIGATION BAR ========== -->
   <div class="navbar">
     <div class="logo">
-      <img src="BSHS Logo.png" alt="School Logo">
+      <img src="{{ asset ('images/BSHS Logo.png')}}" alt="School Logo">
     </div>
   
-    <div class="nav-links">
-      <a href="home.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="assessments.html">Assessments</a>
-      <a href="careerpath.html">Career Paths</a>
-    </div>
   
     <div class="nav-user">
         <a href="profile.html">
           <img src="user-icon.png" alt="User Icon" style="height: 30px;">
         </a>
-        <a class="logout-btn" href="login.html">Log Out</a>
+        <a class="logout-btn" href="{{route('login')}}">Log Out</a>
       </div>
   </div>
   

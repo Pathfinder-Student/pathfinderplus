@@ -13,12 +13,6 @@
       <img src="{{ asset ('images/BSHS Logo.png')}}" alt="School Logo">
     </div>
   
-    <div class="nav-links">
-      <a href="home.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="assessments.html">Assessments</a>
-      <a href="careerpath.html">Career Paths</a>
-    </div>
   
     <div class="nav-user">
         <a href="profile.html">
@@ -27,7 +21,66 @@
         <a class="logout-btn" href="login.html">Log Out</a>
       </div>
   </div>
-  
+
+ @if(isset($recommendedStrand) && isset($personalityType) && isset($resultLabel))
+<style>
+    .result-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 9998;
+    }
+
+    .result-modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+        z-index: 9999;
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+    }
+
+    .result-modal h4 {
+        margin-bottom: 1rem;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+        text-decoration: none;
+    }
+
+    .close-btn:hover {
+        color: red;
+    }
+</style>
+
+<div class="result-modal-overlay"></div>
+
+<div class="result-modal">
+    <a href="{{ route('studentdashboard') }}" class="close-btn">&times;</a>
+    <h4>Assessment Result</h4>
+    <p><strong>Recommended Strand:</strong> {{ $recommendedStrand }}</p>
+    <p><strong>Personality Type:</strong> {{ $personalityType }}</p>
+    <p><strong>Result Label:</strong> {{ $resultLabel }}</p>
+    <a href="{{ route('studentdashboard') }}" class="btn btn-success mt-3">Go to Dashboard</a>
+</div>
+@endif
+
+
 
   <!-- ========== ASSESSMENT HEADER SECTION ========== -->
   <div class="assessment-header">
@@ -112,10 +165,10 @@
 }
 </style>
 
+
 <script>
 const answers = {};
 
-// Handle selection
 document.querySelectorAll('.option-btn').forEach(button => {
     button.addEventListener('click', function () {
         const question = this.dataset.question;
@@ -123,7 +176,6 @@ document.querySelectorAll('.option-btn').forEach(button => {
 
         answers[question] = value;
 
-        // Unselect other buttons in same question
         document.querySelectorAll(`[data-question="${question}"]`).forEach(btn => {
             btn.classList.remove('selected');
         });
@@ -132,7 +184,6 @@ document.querySelectorAll('.option-btn').forEach(button => {
     });
 });
 
-// Prepare form submission
 function prepareAnswers(event) {
     event.preventDefault();
 
@@ -143,10 +194,8 @@ function prepareAnswers(event) {
         return false;
     }
 
-    // Only store the selected values (A/B)
     document.getElementById('answers').value = JSON.stringify(Object.values(answers));
 
-    // Submit form
     document.querySelector('form').submit();
     return true;
 }

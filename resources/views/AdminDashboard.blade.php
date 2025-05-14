@@ -173,7 +173,6 @@
           </tr>
         </thead>
         <tbody>
-          <>
             <td>Measures proficiency in Math, English, and Science</td>
             <td>count</td>
             <td>

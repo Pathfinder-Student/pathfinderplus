@@ -181,37 +181,44 @@
 </head>
 
 <body>
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
 
   <div class="container">
     <form method="POST" action="{{ route('login.submit') }}">
     @csrf
     <div class="form-container" id="login-form">
         <h2>Let's Login</h2>
-        <div class="error" id="login-error-msg">Please fill in both fields.</div>
 
-        <form action="{{ url('login') }}" method="POST">
-        @csrf
-            <input type="text" name="username" id="username" placeholder="Username" autocomplete="username" required>
-            <input type="password" name="password" id="password" placeholder="Password" autocomplete="current-password" required>
-            <button type="submit">Login</button>
-        </form>
-  
+    <form action="{{ url('login') }}" method="POST">
+    @csrf
 
-        <div class="switch-link">
+    <input 
+        type="text" 
+        name="username" 
+        id="username" 
+        placeholder="{{ $errors->has('username') ? $errors->first('username') : 'Username' }}" 
+        value="{{ old('username') }}" 
+        autocomplete="username" 
+        required
+        style="{{ $errors->has('username') ? 'border: 1px solid red;' : '' }}">
+    <input 
+        type="password" 
+        name="password" 
+        id="password" 
+        placeholder="{{ $errors->has('password') ? $errors->first('password') : 'Password' }}" 
+        autocomplete="current-password" 
+        required
+        style="{{ $errors->has('password') ? 'border: 1px solid red;' : '' }}">
+    <button type="submit">Login</button>
+</form>
+
+
+          <div class="switch-link">
           Don't have an account? <a href="#" onclick="showAskAdmin()">Ask Admin</a>
         </div>
       </form>
     </div>
   </div>
+
 
   
 </body>

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Edit Profile</title>
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     /* ===== General Reset ===== */
@@ -310,35 +311,65 @@ footer {
     <img src="{{ asset('images/BSHS Logo.png')}}" alt="School Logo" class="logo">
   </div>
   <div class="nav-right">
-      <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+<form action="{{ route('logout') }}" method="POST" style="display: inline;">
     @csrf
     <button type="submit" class="logout-button">Log Out</button>
-    </form>
-  </div>
+</form>  </div>
 </header>
 
 <!-- Edit Profile Form -->
 <section class="edit-profile-container">
   <div class="edit-profile-card">
     <div class="profile-picture">
-      <img src="{{ asset('images/student-profile.jpg') }}" alt="Profile Picture" id="profileImage">
+      <img src="{{ Auth::user()->profile_picture ?? asset('images/default-profile.jpg') }}" alt="Profile Picture" id="profileImage">
     </div>
     <div class="picture-buttons">
-      <button onclick="editProfilePicture()">Edit Profile Picture</button>
-      <button onclick="removeProfilePicture()">Remove Profile Picture</button>
+      <button type="button" onclick="editProfilePicture()">Edit Profile Picture</button>
+      <button type="button" onclick="removeProfilePicture()">Remove Profile Picture</button>
     </div>
 
-    <form id="profileForm">
+    <!-- Edit Profile Form -->
+    <form id="profileForm" method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
+      @csrf
       <h2>Edit Profile</h2>
-      <input type="email" id="email" placeholder="Email Address" required>
-      <input type="text" id="contact" placeholder="Contact Number" required>
-      <input type="text" id="address" placeholder="Address" required>
+      <input type="file" name="profile_picture" id="profilePictureInput" accept="image/*" style="display: none;">
+
+      <input type="email" name="email" id="email" value="{{ Auth::user()->email }}" placeholder="Email Address" required>
+      <input type="text" name="contact" id="contact" value="{{ Auth::user()->contact }}" placeholder="Contact Number" required>
+      <input type="text" name="address" id="address" value="{{ Auth::user()->address }}" placeholder="Address" required>
+
       <div class="form-buttons">
-          <button type="submit" class="save-btn">Save</button>
-          <button type="reset" class="discard-btn">Discard</button>
+        <button type="submit" class="save-btn">Save</button>
+        <button type="reset" class="discard-btn">Discard</button>
+      </div>
     </form>
   </div>
 </section>
+
+<!-- JavaScript for functionality -->
+<script>
+  function editProfilePicture() {
+    const fileInput = document.getElementById('profilePictureInput');
+    fileInput.click();
+
+    fileInput.onchange = function (event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          document.getElementById('profileImage').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+  }
+
+  function removeProfilePicture() {
+    document.getElementById('profileImage').src = "{{ asset('images/default-profile.jpg') }}";
+    document.getElementById('profilePictureInput').value = null;
+  }
+</script>
+
 
 
 
@@ -363,62 +394,36 @@ footer {
   </footer>
 
 <script>
-document.getElementById('profileForm').addEventListener('submit', function (e) {
-  e.preventDefault();
+document.getElementById('profileForm').addEventListener('submit', function(e) {
+    e.preventDefault();
 
-  const data = {
-    fullName: document.getElementById('fullName').value,
-    studentId: document.getElementById('studentId').value,
-    email: document.getElementById('email').value,
-    contact: document.getElementById('contact').value,
-    address: document.getElementById('address').value
-  };
+    const email = document.getElementById('email').value;
+    const contact = document.getElementById('contact').value;
+    const address = document.getElementById('address').value;
 
-  const profileId = document.getElementById('profileId').value;
+    fetch('/student/update-profile', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            email: email,
+            contact: contact,
+            address: address
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert('Profile updated successfully!');
 
-  const url = profileId ? `http://localhost:3000/profile/${profileId}` : 'http://localhost:3000/profile';
-  const method = profileId ? 'PUT' : 'POST';
-
-  fetch(url, {
-    method: method,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  })
-    .then(res => res.json())
-    .then(res => {
-      alert(res.message);
-      if (!profileId && res.id) {
-        document.getElementById('profileId').value = res.id;
-      }
+    })
+        console.error('Error:', error);
+        alert('An error occurred while updating the profile.');
     });
 });
-
-document.getElementById('discardBtn').addEventListener('click', () => {
-  document.getElementById('profileForm').reset();
-  document.getElementById('profileId').value = '';
-});
-
-document.getElementById('removeBtn').addEventListener('click', () => {
-  const profileId = document.getElementById('profileId').value;
-  if (!profileId) {
-    alert('No profile to remove.');
-    return;
-  }
-
-  if (confirm('Are you sure you want to delete this profile?')) {
-    fetch(`http://localhost:3000/profile/${profileId}`, {
-      method: 'DELETE'
-    })
-      .then(res => res.json())
-      .then(res => {
-        alert(res.message);
-        document.getElementById('profileForm').reset();
-        document.getElementById('profileId').value = '';
-      });
-  }
-});
-
 </script>
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
