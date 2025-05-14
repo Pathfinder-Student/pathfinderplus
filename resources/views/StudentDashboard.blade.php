@@ -610,16 +610,18 @@ tbody tr:hover {
       </span>
     </td>
     <td>
-  @if($assessment->status === 'complete')
-    <a href="{{ $assessment->link }}" target="_blank" class="action-button">View</a>
-  @elseif($assessment->link)
-    <a href="{{ $assessment->link }}" target="_blank" class="action-button">Start</a>
-  @else
-    <span style="color: grey;">No Link</span>
-  @endif
-</td>
+      @if(strtolower($assessment->status) === 'complete' && $assessment->link)
+        <a href="{{ $assessment->link }}" target="_blank" class="action-button">View</a>
+      @elseif(strtolower($assessment->status) === 'pending' && $assessment->link)
+        <a href="{{ $assessment->link }}" class="action-button">Start</a>
+      @else
+        <span style="color: grey;">No Link</span>
+      @endif
+    </td>
   </tr>
 @endforeach
+
+
 </tbody>
     </table>
   </section>
@@ -640,7 +642,7 @@ tbody tr:hover {
         </tr>
       </thead>
       <tbody>
-         @forelse($results as $index => $result)
+      @forelse($results as $index => $result)
     <tr>
       <td>{{ $index + 1 }}</td>
       <td>{{ $result->description }}</td>

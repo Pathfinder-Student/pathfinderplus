@@ -12,7 +12,8 @@ class Assessment extends Model
         'name', 
         'description',
          'status', 
-         'link'
+         'link',
+         'user_id',
     ];
 
 }

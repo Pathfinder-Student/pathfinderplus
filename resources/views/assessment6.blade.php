@@ -35,6 +35,7 @@
     }
 
     .result-modal {
+        height:50%;
         position: fixed;
         top: 50%;
         left: 50%;

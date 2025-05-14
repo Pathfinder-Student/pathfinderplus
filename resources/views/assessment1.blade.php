@@ -18,7 +18,7 @@
         <a href="profile.html">
           <img src="user-icon.png" alt="User Icon" style="height: 30px;">
         </a>
-        <a class="logout-btn" href="{{route('login')}}">Log Out</a>
+        <a class="logout-btn" href="{{route('logout')}}">Log Out</a>
       </div>
   </div>
   
@@ -126,14 +126,12 @@ document.querySelectorAll('.option-btn').forEach(button => {
   });
 });
 
-// Function to prepare answers before submitting
 function prepareAnswers(event) {
-  event.preventDefault();  // Prevent form submission to manually validate answers
+  event.preventDefault();
 
-  // Get all distinct question IDs
   const questions = new Set();
   document.querySelectorAll('.option-btn').forEach(btn => {
-    questions.add(btn.dataset.question); // Add question IDs to a set to avoid duplicates
+    questions.add(btn.dataset.question);
   });
 
   const totalQuestions = questions.size; 
@@ -143,12 +141,11 @@ function prepareAnswers(event) {
     return false;
   }
 
-  console.log(answers);  // Debugging: Check the contents of the answers object
+  console.log(answers); 
 
-  // Assign the answers to the hidden input
   document.getElementById('answers').value = JSON.stringify(answers);
 
-  // Submit the form if everything is valid
+
   document.querySelector('form').submit();
   return true;
 }

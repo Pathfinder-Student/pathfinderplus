@@ -38,6 +38,7 @@ class AdminController extends Controller
     ]);
 
     $assessment = new Assessment();
+    $assessment->user_id = Auth::id();
     $assessment->name = $validated['name'];
     $assessment->description = $validated['description'];
     $assessment->status = $validated['status'];

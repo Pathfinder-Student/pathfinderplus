@@ -30,15 +30,17 @@ class StudentController extends Controller
         return view('login');
     }
 
-    public function studentdashboard()
-    {
-    $assessments = Assessment::all();
+ public function studentdashboard()
+{
     $student = Auth::user();
+
+    $assessments = Assessment::where('user_id', $student->id)->get();
 
     $results = Result::where('user_id', $student->id)->orderBy('date_taken', 'desc')->get();
 
     return view('studentdashboard', compact('student', 'assessments', 'results'));
-    }
+}
+
 
     public function dashboard()
     {
@@ -68,7 +70,7 @@ public function login(Request $request)
 
     $user = User::where('username', $credentials['username'])->first();
     if (!$user) {
-        return back()->withErrors(['username' => 'Account does not exist.'])->withInput();
+        return back()->withErrors(['username' => 'Username does not exist.'])->withInput();
     }
 
     if ($user->password !== $credentials['password']) {
@@ -140,7 +142,7 @@ public function login(Request $request)
     ]);
 
     Assessment::create([
-        'student_id' => Auth::id(),
+        'user_id' => Auth::id(),
         'name' => $request->name,
         'description' => $request->description,
         'status' => $request->status,
@@ -256,11 +258,13 @@ public function submitAssessment6(Request $request)
         'status' => 'complete',
     ]);
 
-     Assessment::where('user_id', Auth::id())
-        ->where('name', 'Personality Assessment')
-        ->update([
+     Assessment::updateOrCreate([
+            'user_id' => Auth::id(),
+            'name' => 'Academic and Personality Skills',
+        ], [
+            'description' => 'Guides strand choice through personality and academic assessment',
             'status' => 'complete',
-            'link' => route('studentdashboard')
+            'link' => route('studentdashboard'),
         ]);
 
     session()->forget([
