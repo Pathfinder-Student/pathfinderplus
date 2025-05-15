@@ -14,10 +14,8 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        $takenCount = Result::where('description', 'Academic and Personality Skills')
-                        ->distinct('user_id')
-                        ->count('user_id');
-    return view('admindashboard', compact('takenCount'));
+        
+    return view('admindashboard');
     }
     public function admindashstudents()
     {
@@ -26,7 +24,10 @@ class AdminController extends Controller
   }
     public function admindashassessments()
     {
-        return view('admindashassessments');
+         $takenCount = Result::where('description', 'Academic and Personality Skills')
+                        ->distinct('user_id')
+                        ->count('user_id');
+        return view('admindashassessments', compact('takenCount'));
     }
     public function admindashreports()
     {

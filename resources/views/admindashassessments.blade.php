@@ -204,11 +204,15 @@
         </thead>
         <tbody>
           <tr>
-            <td>Academic and Personality Skills</td>
-            <td>13</td>
+             <td>Academic and Personality Skills</td>
+            <td>{{ $takenCount }}</td>
             <td>
-              <button class="action-btn">Edit</button>
-              <button class="action-btn delete-btn">Delete</button>
+              <a href="{{ route('edit.assessment', ['name' => 'Academic and Personality Skills']) }}" class="action-btn">Edit</a>
+              <form action="{{ route('delete.assessment', ['name' => 'Academic and Personality Skills']) }}" method="POST" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="action-btn delete-btn" onclick="return confirm('Are you sure?')">Delete</button>
+              </form>
             </td>
           </tr>
         </tbody>

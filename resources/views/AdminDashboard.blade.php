@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Assessments - Admin Panel</title>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
   <style>
     body {
       margin: 0;
@@ -63,66 +62,57 @@
       cursor: pointer;
     }
     .main {
-      flex: 1;
+      flex-grow: 1;
       padding: 40px;
-      background-color: #f7faf5;
     }
-
-    .main h1 {
-      margin-top: 0;
+    .dashboard-header {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 30px;
     }
-
-    .add-btn {
-      background-color: green;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin: 20px 0;
+    .stats {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 40px;
     }
-
-    .overview {
+    .stat-box {
       background-color: white;
-      padding: 20px;
-      border-radius: 8px;
+      padding: 30px;
+      border-radius: 10px;
+      width: 200px;
+      text-align: center;
+      box-shadow: 0 0 4px rgba(0,0,0,0.1);
     }
-
+    .stat-number {
+      font-size: 22px;
+      font-weight: bold;
+    }
+    .overview {
+      margin-top: 20px;
+    }
     .overview h2 {
-      margin-top: 0;
+      font-size: 20px;
+      margin-bottom: 20px;
     }
-
     table {
       width: 100%;
-      border-collapse: collapse;
+      border-spacing: 0 15px;
     }
-
-    th, td {
-      text-align: left;
-      padding: 10px;
-    }
-
     th {
+      text-align: left;
       color: green;
     }
-
     td {
-      vertical-align: top;
+      padding: 10px 0;
     }
-
-    .action-btn {
-      padding: 8px 16px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+    .view-button {
+      padding: 8px 20px;
+      border: 2px solid green;
+      border-radius: 6px;
+      background-color: white;
+      color: green;
       cursor: pointer;
-      margin-right: 10px;
     }
-
-    .delete-btn {
-      color: red;
-      border-color: red;
-    }
-
     .footer {
       background-color: darkgreen;
       color: white;
@@ -131,56 +121,6 @@
       position: absolute;
       bottom: 0;
       width: 100%;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-    }
-
-    .modal-content {
-      background-color: #fff;
-      margin: 8% auto;
-      padding: 20px;
-      border-radius: 10px;
-      width: 40%;
-      max-width: 500px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    }
-
-    .modal-content h2 {
-      color: green;
-      text-align: center;
-    }
-
-    .modal-content input,
-    .modal-content textarea,
-    .modal-content select {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    .close {
-      position: absolute;
-      right: 20px;
-      top: 10px;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .close:hover {
-      color: red;
     }
   </style>
 </head>
@@ -193,55 +133,62 @@
       <div class="name">Jane Doe</div>
       <div class="role">Admin</div>
     </div>
-    <nav class="menu">
-      <a href="{{ route('admindashboard') }}" class="nav-item active">Home</a>
-      <a href="{{ route('admindashstudents') }}" class="nav-item">Students</a>
-      <a href="{{ route('admindashassessments') }}" class="nav-item">Assessments</a>
-      <a href="{{ route('admindashreports') }}" class="nav-item">Reports</a>
-      <a href="{{ route('admindashsettings') }}" class="nav-item">Settings</a>
-    </nav>
+      <nav class="menu">
+        <a href="{{route('admindashboard')}}" class="nav-item active">Home</a>
+        <a href="{{route('admindashstudents')}}" class="nav-item">Students</a>
+        <a href="{{route('admindashassessments')}}" class="nav-item">Assessments</a>
+        <a href="{{route('admindashreports')}}" class="nav-item">Reports</a>
+        <a href="{{route('admindashsettings')}}" class="nav-item ">Settings</a>
+      </nav>
     <div class="logout-section">
       <p>Welcome, Admin!</p>
-      <form action="{{ route('logout') }}" method="POST">
-        @csrf
-        <button type="submit" class="logout-button">Log Out</button>
-      </form>
+      <button class="logout-button">Log Out</button>
     </div>
   </div>
 
   <div class="main">
-    <h1>Assessments</h1>
-    <button class="add-btn" onclick="openAddModal()">➕ Add Assessment</button>
+    <div class="dashboard-header">Dashboard</div>
+    <div class="stats">
+      <div class="stat-box">
+        <div class="stat-number">100</div>
+        <div>Students</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number">45</div>
+        <div>Assessments Taken</div>
+      </div>
+    </div>
 
     <div class="overview">
       <h2>Overview</h2>
       <table>
         <thead>
           <tr>
-            <th>Assessment</th>
-            <th>Taken</th>
+            <th>Student Name</th>
+            <th>Assessment Taken</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Academic and Personality Skills</td>
-            <td>{{ $takenCount }}</td>
-            <td>
-              <a href="{{ route('edit.assessment', ['name' => 'Academic and Personality Skills']) }}" class="action-btn">Edit</a>
-              <form action="{{ route('delete.assessment', ['name' => 'Academic and Personality Skills']) }}" method="POST" style="display:inline;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="action-btn delete-btn" onclick="return confirm('Are you sure?')">Delete</button>
-              </form>
-            </td>
+            <td>Jin Malapoks</td>
+            <td>Measures proficiency in Math, English, and Science</td>
+            <td><button class="view-button">View Result</button></td>
+          </tr>
+          <tr>
+            <td>Eysaak Ey</td>
+            <td>Understand interests and personal traits</td>
+            <td><button class="view-button">View Result</button></td>
+          </tr>
+          <tr>
+            <td>Duwin Delulu</td>
+            <td>Identifies possible career alignments</td>
+            <td><button class="view-button">View Result</button></td>
           </tr>
         </tbody>
       </table>
     </div>
-
   </div>
-
 </div>
 
 <div class="footer">
